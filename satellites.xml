@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- 
+     file generated on thursday, 18th of december 2014, 05:44:24 [GMT] 
+     by online satellites.xml generator @ http://satellites-xml.eu 
+     please let us know if you find any inconsistencies in this file 
+-->
+<satellites>
+	<sat name="Eutelsat 36A/36B (36.0E)" flags="0" position="360">
+		<transponder frequency="11727000" symbol_rate="27500000" polarization="0" fec_inner="3"/>
+		<transponder frequency="11747000" symbol_rate="27500000" polarization="1" fec_inner="3"/>
+		<transponder frequency="11766000" symbol_rate="27500000" polarization="0" fec_inner="3"/>
+		<transponder frequency="11804000" symbol_rate="27500000" polarization="0" fec_inner="3"/>
+		<transponder frequency="11843000" symbol_rate="27500000" polarization="0" fec_inner="3"/>
+		<transponder frequency="11881000" symbol_rate="27500000" polarization="0" fec_inner="3"/>
+		<transponder frequency="11919000" symbol_rate="27500000" polarization="0" fec_inner="3"/>
+		<transponder frequency="11958000" symbol_rate="27500000" polarization="0" fec_inner="3"/>
+		<transponder frequency="12034000" symbol_rate="27500000" polarization="0" fec_inner="3"/>
+		<transponder frequency="12054000" symbol_rate="27500000" polarization="1" fec_inner="3"/>
+		<transponder frequency="12111000" symbol_rate="27500000" polarization="0" fec_inner="3"/>
+		<transponder frequency="12149000" symbol_rate="27500000" polarization="0" fec_inner="3"/>
+		<transponder frequency="12169000" symbol_rate="27500000" polarization="1" fec_inner="3"/>
+		<transponder frequency="12190000" symbol_rate="20000000" polarization="0" fec_inner="3"/>
+		<transponder frequency="12226000" symbol_rate="27500000" polarization="0" fec_inner="3"/>
+		<transponder frequency="12303000" symbol_rate="27500000" polarization="0" fec_inner="3"/>
+		<transponder frequency="12360000" symbol_rate="27500000" polarization="1" fec_inner="3"/>
+		<transponder frequency="12418000" symbol_rate="27500000" polarization="0" fec_inner="3"/>
+	</sat>
+</satellites>
+
+
