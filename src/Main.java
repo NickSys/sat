@@ -83,23 +83,23 @@ public class Main {
        // int colTabl=0;
         for (Element table:tables) {
 
-            int tableRows = table.select("tr").size();
+            int tableRows = table.select("tr").size();   //количество строк
              Elements rows = table.select("tr");
              for (Element row: rows) {
-                 if (tableRows > 10 && tableRows < 150) {
-                     Elements cells = row.getElementsByTag("td");
-                     if (cells.size()>7) {
+                 if (tableRows > 10 && tableRows < 150) {   // если строк в таблице меньше 10 - то это какието мелкие таблицы ненужные, отсекаем и есил болье 150 это скорее всего будет вся таблица целиком
+                     Elements cells = row.getElementsByTag("td");  // берем количество ячеек в строке
+                     if (cells.size()>7) {                         // если их больше 7 то это нужна таблица, в которой хранятся нужные данные
 
-                         String nameProv = cells.get(2).text();
-                         if (prov.equals(nameProv)) {
-                             String tmpString = cells.get(0).text().trim();
-                             int ss = tmpString.indexOf(' ', 0);
-                             String freq =cells.get(5).text();
+                         String nameProv = cells.get(2).text();    // именно в этой ячейки хранится имя провайдера телевидения
+                         if (prov.equals(nameProv)) {              // сравниваем с нужным, почемуто не сработалоа простое prov==nameProv пришлось через equals
+                             String tmpString = cells.get(0).text().trim();     // в этой ячейки частота и полярзация
+                             int ss = tmpString.indexOf(' ', 0);        // ищем первый пробел, в строке 11655 V fgfgfd первый пробел должен быть в 5, но указывает на 7, есть очучение что цифры игнорит
+                             String speed =cells.get(5).text();          // в эту переменную скорость и fec, fec не стал распарсивать ибо для моего провайдера он одинаковый
                              String pol = tmpString.substring(ss-1,ss);
 
-                             String strOut = "\t\t<transponder frequency=\"" + tmpString.substring(0,ss-2) + "000\"" + " symbol_rate=\"" + freq.substring(0,5) + "000\"";
+                             String strOut = "\t\t<transponder frequency=\"" + tmpString.substring(0,ss-2) + "000\"" + " symbol_rate=\"" + speed.substring(0,5) + "000\"";
 
-                             if (pol.equals("L")) pol="0"; else pol="1";
+                             if (pol.equals("L")) pol="0"; else pol="1";        // поляризация, если L - то это 0, если V то 1, нужно для ресиверв в цифровом формате, на сайте буквы
                              strOut=strOut + " polarization=\""+pol + "\" fec_inner=\"3\"/>";
 
                              System.out.println(strOut);
