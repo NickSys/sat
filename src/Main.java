@@ -53,6 +53,12 @@ import java.io.*;
 
 public class Main {
 
+    public static final String HEAD = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n" +
+            "<satellites>\n\t<sat name=\"Eutelsat 36A/36B (36.0E)\" flags=\"0\" position=\"360\">";
+
+    public static final String FOOT = "\t</sat>\n</satellites>\n";
+
+    private static final int MAX_COUNTER_CELLS = 7;
 
     private static void addToFile(String myString) {
         // file
@@ -69,18 +75,12 @@ public class Main {
     public static void main(String[] args) throws IOException {
         String url = "http://www.lyngsat.com/Eutelsat-36A-36B.html";
         String prov = "Tricolor TV";
+
         Document doc = Jsoup.connect(url).get();
         Elements tables = doc.select("table");
-        String sTmp = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n" +
-                "<!-- \n" +
-                "     file generated on thursday, 18th of december 2014, 05:44:24 [GMT] \n" +
-                "     by online satellites.xml generator @ http://satellites-xml.eu \n" +
-                "     please let us know if you find any inconsistencies in this file \n" +
-                "-->\n" +
-                "<satellites>\n" +
-                "\t<sat name=\"Eutelsat 36A/36B (36.0E)\" flags=\"0\" position=\"360\">";
-        addToFile(sTmp);
-       // int colTabl=0;
+
+        addToFile(HEAD);
+
         for (Element table:tables) {
 
             int tableRows = table.select("tr").size();   //количество строк
@@ -88,16 +88,16 @@ public class Main {
              for (Element row: rows) {
                  if (tableRows > 10 && tableRows < 150) {   // если строк в таблице меньше 10 - то это какието мелкие таблицы ненужные, отсекаем и есил болье 150 это скорее всего будет вся таблица целиком
                      Elements cells = row.getElementsByTag("td");  // берем количество ячеек в строке
-                     if (cells.size()>7) {                         // если их больше 7 то это нужна таблица, в которой хранятся нужные данные
+                     if (cells.size()>MAX_COUNTER_CELLS) {                         // если их больше 7 то это нужна таблица, в которой хранятся нужные данные
 
                          String nameProv = cells.get(2).text();    // именно в этой ячейки хранится имя провайдера телевидения
                          if (prov.equals(nameProv)) {              // сравниваем с нужным, почемуто не сработалоа простое prov==nameProv пришлось через equals
                              String tmpString = cells.get(0).text().trim();     // в этой ячейки частота и полярзация
-                             int ss = tmpString.indexOf(' ', 0);        // ищем первый пробел, в строке 11655 V fgfgfd первый пробел должен быть в 5, но указывает на 7, есть очучение что цифры игнорит
+                             int posOfSpace = tmpString.indexOf(' ', 0);        // ищем первый пробел, в строке 11655 V fgfgfd первый пробел должен быть в 5, но указывает на 7, есть очучение что цифры игнорит
                              String speed =cells.get(5).text();          // в эту переменную скорость и fec, fec не стал распарсивать ибо для моего провайдера он одинаковый
-                             String pol = tmpString.substring(ss-1,ss);
+                             String pol = tmpString.substring(posOfSpace-1,posOfSpace);
 
-                             String strOut = "\t\t<transponder frequency=\"" + tmpString.substring(0,ss-2) + "000\"" + " symbol_rate=\"" + speed.substring(0,5) + "000\"";
+                             String strOut = "\t\t<transponder frequency=\"" + tmpString.substring(0,posOfSpace-2) + "000\"" + " symbol_rate=\"" + speed.substring(0,5) + "000\"";
 
                              if (pol.equals("L")) pol="0"; else pol="1";        // поляризация, если L - то это 0, если V то 1, нужно для ресиверв в цифровом формате, на сайте буквы
                              strOut=strOut + " polarization=\""+pol + "\" fec_inner=\"3\"/>";
@@ -111,10 +111,8 @@ public class Main {
                    }
                  }
              }
-        sTmp = "\t</sat>\n" +
-                "</satellites>\n" +
-                "\n";
-        addToFile(sTmp);
+
+        addToFile(FOOT);
     }
 
 }
